@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Macropulse</title>
+    <script>
+        try {
+            const prefs = JSON.parse(localStorage.getItem("macropulsePreferences") || "{}");
+            document.documentElement.setAttribute("data-theme", prefs.theme || "dark");
+        } catch {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fa-solid fa-chart-line"></i>
+                Macropulse
+            </a>
+            <div class="navbar-links">
+                <a href="index.html">Dashboard</a>
+                <a href="settings.html" class="active">Settings</a>
+                <a href="settings.html" class="profile-button" data-profile-button aria-label="Open settings">
+                    <span class="profile-avatar">
+                        <img data-profile-image alt="Profile picture" hidden>
+                        <span data-profile-initials>G</span>
+                    </span>
+                    <span data-profile-status>Sign in</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="settings-page">
+        <section class="settings-hero">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <h1>Settings</h1>
+                <p>Choose your theme, sign in, and keep your profile picture ready.</p>
+            </div>
+        </section>
+
+        <section class="container settings-grid">
+            <div class="settings-panel">
+                <div class="settings-panel-header">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                    <div>
+                        <h2>Appearance</h2>
+                        <p>Switch between dark mode and light mode.</p>
+                    </div>
+                </div>
+
+                <div class="theme-toggle" role="group" aria-label="Theme mode">
+                    <button type="button" class="theme-option" data-theme-option="dark">
+                        <i class="fa-solid fa-moon"></i>
+                        Dark
+                    </button>
+                    <button type="button" class="theme-option" data-theme-option="light">
+                        <i class="fa-solid fa-sun"></i>
+                        Light
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-panel">
+                <div class="settings-panel-header">
+                    <i class="fa-solid fa-user"></i>
+                    <div>
+                        <h2>Profile</h2>
+                        <p>Update the account shown in the top-right corner.</p>
+                    </div>
+                </div>
+
+                <div class="profile-preview">
+                    <span class="profile-avatar profile-avatar-lg">
+                        <img id="profile-preview-image" alt="Profile picture preview" hidden>
+                        <span id="profile-preview-initials">G</span>
+                    </span>
+                    <div>
+                        <div class="profile-preview-name" id="profile-preview-name">Guest</div>
+                        <div class="profile-preview-email" id="profile-preview-email">Not signed in</div>
+                    </div>
+                </div>
+
+                <form class="settings-form" id="profile-form">
+                    <label for="profile-name">Name</label>
+                    <input type="text" id="profile-name" placeholder="Your name" autocomplete="name">
+
+                    <label for="profile-email">Email</label>
+                    <input type="email" id="profile-email" placeholder="you@example.com" autocomplete="email">
+
+                    <label for="profile-image-input">Profile picture</label>
+                    <input type="file" id="profile-image-input" accept="image/*">
+
+                    <div class="settings-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Sign in
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="clear-profile-image">
+                            Remove picture
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="sign-out">
+                            Sign out
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="settings-panel">
+                <div class="settings-panel-header">
+                    <i class="fa-solid fa-bell"></i>
+                    <div>
+                        <h2>Notification Preferences</h2>
+                        <p>Choose which market updates and alerts should stay enabled for this browser.</p>
+                    </div>
+                </div>
+
+                <form class="settings-form" id="notification-form">
+                    <label class="preference-toggle">
+                        <input type="checkbox" id="price-alerts">
+                        <span>
+                            <strong>Price Alerts</strong>
+                            <small>Save notifications for major stock price movements.</small>
+                        </span>
+                    </label>
+
+                    <label class="preference-toggle">
+                        <input type="checkbox" id="daily-summary">
+                        <span>
+                            <strong>Daily Market Summary</strong>
+                            <small>Keep the end-of-day market recap enabled.</small>
+                        </span>
+                    </label>
+
+                    <label class="preference-toggle">
+                        <input type="checkbox" id="signal-alerts">
+                        <span>
+                            <strong>Signal Change Alerts</strong>
+                            <small>Track when BUY, SELL, or HOLD signals change.</small>
+                        </span>
+                    </label>
+
+                    <label class="preference-toggle">
+                        <input type="checkbox" id="weekly-digest">
+                        <span>
+                            <strong>Weekly Portfolio Digest</strong>
+                            <small>Keep a weekly summary of portfolio highlights turned on.</small>
+                        </span>
+                    </label>
+                </form>
+            </div>
+
+            <div class="settings-panel">
+                <div class="settings-panel-header">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <div>
+                        <h2>Reset Preferences</h2>
+                        <p>Restore the default theme and clear saved profile details from this browser.</p>
+                    </div>
+                </div>
+
+                <div class="reset-preferences-card">
+                    <p>
+                        This removes your saved theme, sign-in state, name, email, and profile picture
+                        from local storage.
+                    </p>
+                    <div class="settings-actions">
+                        <button type="button" class="btn btn-secondary" id="reset-preferences">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Reset Preferences
+                        </button>
+                    </div>
+                    <p class="settings-feedback" id="reset-feedback" role="status" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            Macropulse &mdash; Quantitative stock signals powered by advanced strategies.
+            Not financial advice.
+        </div>
+    </footer>
+
+    <script src="js/preferences.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

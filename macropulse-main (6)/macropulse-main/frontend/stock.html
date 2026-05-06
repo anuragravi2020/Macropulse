@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details - Macropulse</title>
+    <script>
+        try {
+            const prefs = JSON.parse(localStorage.getItem("macropulsePreferences") || "{}");
+            document.documentElement.setAttribute("data-theme", prefs.theme || "dark");
+        } catch {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fa-solid fa-chart-line"></i>
+                Macropulse
+            </a>
+            <div class="navbar-links">
+                <a href="index.html" class="active">Dashboard</a>
+                <a href="settings.html">Settings</a>
+                <a href="settings.html" class="profile-button" data-profile-button aria-label="Open settings">
+                    <span class="profile-avatar">
+                        <img data-profile-image alt="Profile picture" hidden>
+                        <span data-profile-initials>G</span>
+                    </span>
+                    <span data-profile-status>Sign in</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div class="loading-spinner" id="page-loading">
+        <i class="fa-solid fa-spinner"></i>
+        <span>Loading stock data...</span>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" id="page-error" style="display:none">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h2>Stock Not Found</h2>
+        <p id="error-message">Could not find the requested stock.</p>
+        <a href="index.html" class="btn btn-primary">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Stock Content (hidden until loaded) -->
+    <div id="stock-content" style="display:none">
+        <!-- Hero -->
+        <section class="stock-hero">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <div class="stock-hero-content">
+                    <div>
+                        <div class="stock-title">
+                            <h1 id="stock-name">--</h1>
+                            <span class="symbol-tag" id="stock-symbol">--</span>
+                        </div>
+                        <div class="sector-tag" id="stock-sector">--</div>
+                         <!-- Yash Patel, 04/10/2026
+                         Added button to any stock page-->
+                        <button type="button" class="btn btn-save-stock" id="save-stock-btn">Save</button>
+                    </div>
+                    <div class="stock-price-block">
+                        <div class="current-price" id="stock-price">--</div>
+                        <div class="price-change" id="stock-change">--</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Signal Section -->
+        <section class="container signal-section">
+            <div class="section-title">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Quant Signal</span>
+            </div>
+
+            <div class="signal-main-card" id="signal-card">
+                <div class="loading-spinner" id="signal-loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <span>Analyzing strategies...</span>
+                </div>
+                <div id="signal-content" style="display:none">
+                    <div class="signal-badge-lg" id="signal-badge">--</div>
+                    <div class="confidence-section">
+                        <div class="confidence-label">Confidence</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidence-fill"></div>
+                        </div>
+                        <div class="confidence-value" id="confidence-value">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategy Breakdown -->
+            <div class="section-title">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Strategy Breakdown</span>
+            </div>
+            <div class="strategies-grid" id="strategies-grid">
+                <!-- Filled by JS -->
+            </div>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="container">
+            <div class="section-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Key Metrics</span>
+            </div>
+            <div class="metrics-grid" id="metrics-grid">
+                <!-- Filled by JS -->
+            </div>
+        </section>
+
+        <!-- Price Chart -->
+        <section class="container chart-section">
+            <div class="section-title">
+                <i class="fa-solid fa-chart-area"></i>
+                <span>Price History</span>
+            </div>
+            <div class="chart-container">
+                <div class="chart-controls">
+                    <button class="chart-btn" data-period="1mo">1M</button>
+                    <button class="chart-btn" data-period="3mo">3M</button>
+                    <button class="chart-btn" data-period="6mo">6M</button>
+                    <button class="chart-btn active" data-period="1y">1Y</button>
+                    <button class="chart-btn" data-period="2y">2Y</button>
+                    <button class="chart-btn" data-period="5y">5Y</button>
+                </div>
+                <div class="chart-canvas-wrapper">
+                    <canvas id="price-chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            Macropulse &mdash; Quantitative stock signals powered by advanced strategies.
+            Not financial advice.
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/preferences.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/stock.js"></script>
+</body>
+</html>
